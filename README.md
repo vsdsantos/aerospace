@@ -10,4 +10,4 @@ Programs, routines and stuff that I made in the Aerospace Engineering program at
 - Python
 - Julia
 
-To view Julia's Pluto.js notebooks, paste the file url in [pluto-on-binder.glitch.me](http://pluto-on-binder.glitch.me/).
+To view Julia's Pluto.jl notebooks, paste the file url in [pluto-on-binder.glitch.me](http://pluto-on-binder.glitch.me/).

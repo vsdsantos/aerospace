@@ -19,6 +19,9 @@ using PlutoUI, Plots; pyplot()
 # ╔═╡ 230dd496-6954-11eb-1785-d1b0dc627c05
 using Roots
 
+# ╔═╡ e8365b96-697a-11eb-351f-5321131e4837
+
+
 # ╔═╡ d2b59398-67ee-11eb-306e-e9cc35e0f00c
 md"# Exercícios de Propulsão - U4"
 
@@ -426,6 +429,7 @@ Fica entendido que nos próximos anos haverá uma grande tendência dos motores 
 """
 
 # ╔═╡ Cell order:
+# ╠═e8365b96-697a-11eb-351f-5321131e4837
 # ╟─d2b59398-67ee-11eb-306e-e9cc35e0f00c
 # ╠═dda05584-67fd-11eb-106b-eb97aea7bd8d
 # ╟─41b808ca-67f2-11eb-0cc9-a1a709fb0f3e

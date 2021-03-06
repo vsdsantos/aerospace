@@ -5,11 +5,11 @@ using Markdown
 using InteractiveUtils
 
 # ╔═╡ c44932de-7c7c-11eb-06e3-951424edc1e3
-md"# 1 - Turbofan - Ponto de Projeto"
+md"# 2 - Turbofan - Ponto de Projeto"
 
 # ╔═╡ acc7be0e-7e26-11eb-22e2-47ecc15e413c
 md"""
-Para executar este notebook _Pluto.jl_ em Julia acesse este link em [pluto-on-binder.glitch.me](https://binder.plutojl.org/open?url=https%253A%252F%252Fgithub.com%252Fzuckberj%252Faerospace%252Fblob%252Fmain%252Fpropulsao-1%252Fex-U6-1.jl%253Fraw%253Dtrue)
+Para executar este notebook _Pluto.jl_ em Julia acesse este link em [pluto-on-binder.glitch.me](https://binder.plutojl.org/open?url=https%253A%252F%252Fgithub.com%252Fzuckberj%252Faerospace%252Fblob%252Fmain%252Fpropulsao-1%252Fex-U6-2.jl%253Fraw%253Dtrue)
 """
 
 # ╔═╡ d8973f7e-7c7c-11eb-39bd-27ad60cda98f
@@ -21,14 +21,14 @@ md"### Dados de Entrada"
 # ╔═╡ 43a907c0-7c7d-11eb-3c0d-fdbfd5ac6939
 begin
 	# Dados do Voo 
-	M_0 = 0.2 # Mach
-	H_0 = 0 # Altitude [m]
+	M_0 = 0.8 # Mach
+	H_0 = 35000/3.281 # Altitude [m]
 	md"""
 	**Dados de Voo**
 	
 	``M_0 = `` $M_0
 	
-	``H_0 = `` $H_0 m
+	``H_0 = `` $(round(H_0)) m
 	"""
 end
 
@@ -168,22 +168,21 @@ md"### Tubeira Fan (13-19)"
 # ╔═╡ 214914f8-7c9a-11eb-18f7-996de60df511
 md"### Desempenho do motor"
 
-# ╔═╡ 9b413ce0-7e22-11eb-25b6-ad9c49a8f08d
-mdot_0 = 385
-
 # ╔═╡ ea2cd72c-7e24-11eb-0477-8da0b298c35d
 md"## Resultados"
 
-# ╔═╡ f1ec599c-7e24-11eb-3358-2bf339878821
-F_R = 14206
+# ╔═╡ 0881e99a-7e2c-11eb-1a2a-17e2b6e34815
+F_R = 5725*4.448/10
 
-# ╔═╡ fe03c17a-7e24-11eb-3c27-05c9513f2652
-S_R = 10.5
+# ╔═╡ 323700c4-7e2c-11eb-2130-8b8eaa8dc7a3
+S_R = 0.574*1.0197*1000/3600
 
 # ╔═╡ 357ad34a-7e26-11eb-3a8d-b30faf22ceb1
 md"""
 ### Comentários
-Verificamos que o empuxo foi subestimado e o consumo superestimado na análise do modelo não ideal. Isto pode seguir de uma temperatura máxima tecnologica maior do que a utlizada ou erros relativos a outros parâmetros
+Verificamos um aumento na razão de expansão na turbina de alta de 0.199 para 0.265, e para a turbina de baixa de 0.153 para 0.241.
+
+Comparando com os dados do motor IAE V2533 A5, houveram resultados muito próximos indicando um modelo preciso e útil na modelagem de motores turbofan.
 """
 
 # ╔═╡ 7692ba46-7c91-11eb-1d85-8dfb35abfffc
@@ -275,9 +274,9 @@ end
 begin
 	P_0, T_0, ρ_0, a_0 = us_atm(H_0)
 	md"""
-	``P_0 = `` $P_0 Pa
+	``P_0 = `` $(round(P_0)) Pa
 	
-	``T_0 = `` $T_0 K
+	``T_0 = `` $(round(T_0)) K
 	
 	``\rho_0 = `` $(round(ρ_0, digits=4)) kg/m³
 	
@@ -365,26 +364,14 @@ end
 
 # ╔═╡ 72b2befe-7c9a-11eb-2240-a9a3d41e4101
 begin
-	S = 1e6*f/((1+α)*F_esp)
-	md"Consumo específico: $(round(S, digits=2)) g/(kN*s)"
+	S = 1e4*f/((1+α)*F_esp)
+	md"Consumo específico: $(round(S, digits=2)) g/(daN*s)"
 end
 
-# ╔═╡ 47a8fef0-7e25-11eb-137a-7fb0485d60b5
+# ╔═╡ 2ce4f370-7e2e-11eb-2ec0-2dd53f9416a5
 begin
 	S_err = round(100*(S - S_R)/S_R, digits=1)
 	md"Erro do Consumo específico: $S_err %"
-end
-
-# ╔═╡ a36024c2-7c9c-11eb-0586-e13afefa9139
-begin
-	F = mdot_0*F_esp/9.81
-	md"Empuxo: $(round(F)) kgf"
-end
-
-# ╔═╡ 08527df6-7e25-11eb-38b7-4fce6f4ba61d
-begin
-	F_err = round(100*(F - F_R)/F_R, digits=1)
-	md"Erro do Empuxo: $F_err %"
 end
 
 # ╔═╡ 54be0e12-7c9a-11eb-072e-737f011adb6d
@@ -410,6 +397,21 @@ end
 begin
 	η_0 = η_p * η_t
 	md"Eficiência Global: $(round(η_0*100, digits=1))%"
+end
+
+# ╔═╡ 9b413ce0-7e22-11eb-25b6-ad9c49a8f08d
+mdot_0 = 385*ρ_0/1.225
+
+# ╔═╡ a36024c2-7c9c-11eb-0586-e13afefa9139
+begin
+	F = mdot_0*F_esp/10
+	md"Empuxo: $(round(F)) daN"
+end
+
+# ╔═╡ 23c8cd2a-7e2e-11eb-1249-dff672295a7d
+begin
+	F_err = round(100*(F - F_R)/F_R, digits=1)
+	md"Erro do Empuxo: $F_err %"
 end
 
 # ╔═╡ ca91d88c-7d38-11eb-3426-a74ea9d8a1f1
@@ -495,10 +497,10 @@ end
 # ╟─9b413ce0-7e22-11eb-25b6-ad9c49a8f08d
 # ╟─a36024c2-7c9c-11eb-0586-e13afefa9139
 # ╟─ea2cd72c-7e24-11eb-0477-8da0b298c35d
-# ╟─f1ec599c-7e24-11eb-3358-2bf339878821
-# ╟─fe03c17a-7e24-11eb-3c27-05c9513f2652
-# ╠═08527df6-7e25-11eb-38b7-4fce6f4ba61d
-# ╠═47a8fef0-7e25-11eb-137a-7fb0485d60b5
+# ╟─0881e99a-7e2c-11eb-1a2a-17e2b6e34815
+# ╟─323700c4-7e2c-11eb-2130-8b8eaa8dc7a3
+# ╟─23c8cd2a-7e2e-11eb-1249-dff672295a7d
+# ╟─2ce4f370-7e2e-11eb-2ec0-2dd53f9416a5
 # ╟─357ad34a-7e26-11eb-3a8d-b30faf22ceb1
 # ╟─7692ba46-7c91-11eb-1d85-8dfb35abfffc
 # ╠═c3ae95c8-7d06-11eb-2947-8f5b9de04880

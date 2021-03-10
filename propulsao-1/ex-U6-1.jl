@@ -168,11 +168,23 @@ md"### Tubeira Fan (13-19)"
 # ╔═╡ 214914f8-7c9a-11eb-18f7-996de60df511
 md"### Desempenho do motor"
 
-# ╔═╡ 9b413ce0-7e22-11eb-25b6-ad9c49a8f08d
-mdot_0 = 385
+# ╔═╡ 154eb184-819d-11eb-23c6-d729c7e9101c
+diameter = 1.613 # m
+
+# ╔═╡ 1b58eb74-819d-11eb-2b5b-fb4ffa62ba6f
+A_0 = π*diameter^2/4
+
+# ╔═╡ da9dbdbe-81ce-11eb-02df-f930af1ae7e3
+A_2_c = A_0/(1+α) - 0.095
+
+# ╔═╡ 2bf4732a-81ce-11eb-341a-65759966db04
+A_2_f = A_2_c*α
 
 # ╔═╡ ea2cd72c-7e24-11eb-0477-8da0b298c35d
 md"## Resultados"
+
+# ╔═╡ 9b413ce0-7e22-11eb-25b6-ad9c49a8f08d
+mdot_R = 385
 
 # ╔═╡ f1ec599c-7e24-11eb-3358-2bf339878821
 F_R = 14206
@@ -183,7 +195,7 @@ S_R = 10.5
 # ╔═╡ 357ad34a-7e26-11eb-3a8d-b30faf22ceb1
 md"""
 ### Comentários
-Verificamos que o empuxo foi subestimado e o consumo superestimado na análise do modelo não ideal. Isto pode seguir de uma temperatura máxima tecnologica maior do que a utlizada ou erros relativos a outros parâmetros
+Verificamos que o consumo e o fluxo de massa foram superestimados, e o empuxo subestimado na análise do modelo não ideal. Isto pode seguir de uma temperatura máxima tecnologica maior do que a utlizada ou erros relativos a outros parâmetros.
 """
 
 # ╔═╡ 7692ba46-7c91-11eb-1d85-8dfb35abfffc
@@ -375,18 +387,6 @@ begin
 	md"Erro do Consumo específico: $S_err %"
 end
 
-# ╔═╡ a36024c2-7c9c-11eb-0586-e13afefa9139
-begin
-	F = mdot_0*F_esp/9.81
-	md"Empuxo: $(round(F)) kgf"
-end
-
-# ╔═╡ 08527df6-7e25-11eb-38b7-4fce6f4ba61d
-begin
-	F_err = round(100*(F - F_R)/F_R, digits=1)
-	md"Erro do Empuxo: $F_err %"
-end
-
 # ╔═╡ 54be0e12-7c9a-11eb-072e-737f011adb6d
 begin
 	FR = F_f_esp/F_c_esp
@@ -410,6 +410,36 @@ end
 begin
 	η_0 = η_p * η_t
 	md"Eficiência Global: $(round(η_0*100, digits=1))%"
+end
+
+# ╔═╡ b959c7cc-81cd-11eb-1261-5931c5acf60b
+mdot_f = P_19*V_19*A_2_f/T_19/R_c - P_0*π_r*π_d*M_0*a_0*A_2_f/T_0/τ_r/τ_d/R_c
+
+# ╔═╡ 9d381776-81ce-11eb-0d6e-83a86b2646c2
+mdot_n = P_9*V_9*A_2_c/T_9/R_t/(1+f) - P_0*π_r*π_d*M_0*a_0*A_2_c/T_0/τ_r/τ_d/R_c/(1+f)
+
+# ╔═╡ ee73076e-81a5-11eb-2128-13c045119554
+begin
+	mdot = mdot_n + mdot_f
+	md"Vazão mássica: $(round(mdot)) kg/s"
+end
+
+# ╔═╡ a36024c2-7c9c-11eb-0586-e13afefa9139
+begin
+	F = mdot*F_esp/9.81
+	md"Empuxo: $(round(F)) kgf"
+end
+
+# ╔═╡ 08527df6-7e25-11eb-38b7-4fce6f4ba61d
+begin
+	F_err = round(100*(F - F_R)/F_R, digits=1)
+	md"Erro do Empuxo: $F_err %"
+end
+
+# ╔═╡ 12d490f2-81ae-11eb-08f7-659a96817ae3
+begin
+	mdot_err = round(100*(mdot - mdot_R)/mdot_R, digits=1)
+	md"Erro do Fluxo de Massa: $mdot_err %"
 end
 
 # ╔═╡ ca91d88c-7d38-11eb-3426-a74ea9d8a1f1
@@ -492,13 +522,21 @@ end
 # ╟─91ddd1a0-7c9b-11eb-2655-815aaf86ffe5
 # ╟─c65c152c-7c9b-11eb-0ce0-2d90dab4e64e
 # ╟─0884e9f6-7c9c-11eb-0eb3-3bcfa4ad9f8b
-# ╟─9b413ce0-7e22-11eb-25b6-ad9c49a8f08d
+# ╠═154eb184-819d-11eb-23c6-d729c7e9101c
+# ╠═1b58eb74-819d-11eb-2b5b-fb4ffa62ba6f
+# ╠═da9dbdbe-81ce-11eb-02df-f930af1ae7e3
+# ╠═2bf4732a-81ce-11eb-341a-65759966db04
+# ╠═b959c7cc-81cd-11eb-1261-5931c5acf60b
+# ╠═9d381776-81ce-11eb-0d6e-83a86b2646c2
+# ╟─ee73076e-81a5-11eb-2128-13c045119554
 # ╟─a36024c2-7c9c-11eb-0586-e13afefa9139
 # ╟─ea2cd72c-7e24-11eb-0477-8da0b298c35d
+# ╟─9b413ce0-7e22-11eb-25b6-ad9c49a8f08d
 # ╟─f1ec599c-7e24-11eb-3358-2bf339878821
 # ╟─fe03c17a-7e24-11eb-3c27-05c9513f2652
-# ╠═08527df6-7e25-11eb-38b7-4fce6f4ba61d
-# ╠═47a8fef0-7e25-11eb-137a-7fb0485d60b5
+# ╟─08527df6-7e25-11eb-38b7-4fce6f4ba61d
+# ╟─47a8fef0-7e25-11eb-137a-7fb0485d60b5
+# ╟─12d490f2-81ae-11eb-08f7-659a96817ae3
 # ╟─357ad34a-7e26-11eb-3a8d-b30faf22ceb1
 # ╟─7692ba46-7c91-11eb-1d85-8dfb35abfffc
 # ╠═c3ae95c8-7d06-11eb-2947-8f5b9de04880
